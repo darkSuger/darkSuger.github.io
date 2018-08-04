@@ -152,6 +152,153 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-网页爬虫" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/04/网页爬虫/">网页爬虫</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/04/网页爬虫/" class="archive-article-date">
+  	<time datetime="2018-08-04T03:24:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网页网址爬虫</p>
+<pre><code>    from urllib import request
+from bs4 import BeautifulSoup
+
+maxpage = 311
+st = &apos;&apos;
+for i in range(maxpage):
+    url = &apos;http://www.zut.edu.cn/index/xwdt/&apos; + str(i+1) + &apos;.htm&apos;
+    k = 5
+    if i == maxpage:
+        k = 3
+        url = &apos;http://www.zut.edu.cn/index/xwdt.htm&apos;
+    port = 80
+    ua = {&apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) &apos;
+                        &apos;Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134&apos;}
+    page = request.Request(url, headers=ua)
+    data = request.urlopen(page).read().decode(&apos;utf-8&apos;)
+    soup = BeautifulSoup(data, &apos;html.parser&apos;)
+    titles = soup.find_all(&apos;a&apos;, &apos;c67214&apos;)
+
+    for title in titles:
+        herf = &apos;&apos;
+        pro = &apos;&apos;
+        pro = title.get(&apos;href&apos;)
+        for j in range(len(pro)):
+            if j &gt; k:
+                herf += pro[j]
+        sonLink = &quot;http://www.zut.edu.cn/&quot; + herf + &apos;\n&apos;
+        st += sonLink
+        print(1)
+with open(&quot;articles.txt&quot;, &quot;w&quot;) as file:
+    file.write(st)
+</code></pre><p>网页内容爬虫</p>
+<pre><code>from urllib import request
+from bs4 import BeautifulSoup
+import os
+
+txt = open(&apos;articles.txt&apos;, &apos;r&apos;)  #我用前一个爬虫来爬新闻页的网址并储存为txt文件
+
+try:               #定位文件夹，实现在下一目录创建文件夹来储存文件
+    os.chdir(&apos;news&apos;)
+except FileNotFoundError as E:  #如果没有创建文件夹，捕获错误，创建文件夹
+    os.mkdir(&apos;news&apos;)
+    os.chdir(&apos;news&apos;)
+    pass
+
+str_s = txt.read()
+test = str_s.split()    #从文件中读取网址并分割成列表进行储存来遍历爬虫
+
+for i in range(len(test)):  #request爬网页代码
+    url = test[i]  #将网页依次读出
+    port = 80
+    ua = {&apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) &apos;
+                        &apos;Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134&apos;}
+    page = request.Request(url, headers=ua)
+    data = request.urlopen(page).read().decode(&apos;utf-8&apos;)  #得到源代码
+
+    soup = BeautifulSoup(data, &apos;html.parser&apos;)     #使用beautifulsoup
+    con = soup.find_all(&apos;p&apos;)   #分割按p标签
+    st = []
+    pro = &apos;&apos;
+    for title in con:
+        pro = str(title.string) #读出为str
+        pro = pro.replace(&apos;\xa0&apos;, &apos;&apos;)  #去掉导致错误的字符
+        if len(pro) &gt;= 10:  #设置大于10个的字符有价值
+            st.append(pro)
+
+        head = soup.find_all(&apos;title&apos;)  #标题提取
+        he = &apos;&apos;
+        t = head[0]
+        he = str(t.string)
+        he = he.replace(&apos;\xa0&apos;, &apos;&apos;)
+
+        with open(he + &quot;.txt&quot;, &quot;w&quot;) as file: #打开并储存文件
+            try:
+                file.write(&apos;标题：&apos;+he+&apos;\n&apos;+&apos;正文：&apos;+&apos;\n&apos;)
+            except ConnectionRefusedError as E:
+                pass
+            for k in st:
+                try:
+                    file.write(&apos;     &apos;+k+&apos;\n&apos;)
+                except ConnectionRefusedError as E:
+                    pass
+        file.close()
+    print(i)
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/04/网页爬虫/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-周一总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     

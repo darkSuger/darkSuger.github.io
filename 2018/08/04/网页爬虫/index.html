@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2018 | Hexo</title>
+  <title>网页爬虫 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
+  <meta name="description" content="网页网址爬虫     from urllib import request from bs4 import BeautifulSoup  maxpage = 311 st = &amp;apos;&amp;apos; for i in range(maxpage):     url = &amp;apos;http://www.zut.edu.cn/index/xwdt/&amp;apos; + str(i+1) + &amp;apos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网页爬虫">
+<meta property="og:url" content="http://yoursite.com/2018/08/04/网页爬虫/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="网页网址爬虫     from urllib import request from bs4 import BeautifulSoup  maxpage = 311 st = &amp;apos;&amp;apos; for i in range(maxpage):     url = &amp;apos;http://www.zut.edu.cn/index/xwdt/&amp;apos; + str(i+1) + &amp;apos">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-04T03:26:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="网页爬虫">
+<meta name="twitter:description" content="网页网址爬虫     from urllib import request from bs4 import BeautifulSoup  maxpage = 311 st = &amp;apos;&amp;apos; for i in range(maxpage):     url = &amp;apos;http://www.zut.edu.cn/index/xwdt/&amp;apos; + str(i+1) + &amp;apos">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,103 +154,240 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-网页爬虫" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      网页爬虫
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/04/网页爬虫/" class="archive-article-date">
+
+        
+        <a href="/2018/08/04/网页爬虫/" class="archive-article-date">
   	<time datetime="2018-08-04T03:24:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-04</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/04/网页爬虫/">网页爬虫</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网页网址爬虫</p>
+<pre><code>    from urllib import request
+from bs4 import BeautifulSoup
 
-        <div class="article-info info-on-right">
-          
-          
+maxpage = 311
+st = &apos;&apos;
+for i in range(maxpage):
+    url = &apos;http://www.zut.edu.cn/index/xwdt/&apos; + str(i+1) + &apos;.htm&apos;
+    k = 5
+    if i == maxpage:
+        k = 3
+        url = &apos;http://www.zut.edu.cn/index/xwdt.htm&apos;
+    port = 80
+    ua = {&apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) &apos;
+                        &apos;Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134&apos;}
+    page = request.Request(url, headers=ua)
+    data = request.urlopen(page).read().decode(&apos;utf-8&apos;)
+    soup = BeautifulSoup(data, &apos;html.parser&apos;)
+    titles = soup.find_all(&apos;a&apos;, &apos;c67214&apos;)
 
+    for title in titles:
+        herf = &apos;&apos;
+        pro = &apos;&apos;
+        pro = title.get(&apos;href&apos;)
+        for j in range(len(pro)):
+            if j &gt; k:
+                herf += pro[j]
+        sonLink = &quot;http://www.zut.edu.cn/&quot; + herf + &apos;\n&apos;
+        st += sonLink
+        print(1)
+with open(&quot;articles.txt&quot;, &quot;w&quot;) as file:
+    file.write(st)
+</code></pre><p>网页内容爬虫</p>
+<pre><code>from urllib import request
+from bs4 import BeautifulSoup
+import os
+
+txt = open(&apos;articles.txt&apos;, &apos;r&apos;)  #我用前一个爬虫来爬新闻页的网址并储存为txt文件
+
+try:               #定位文件夹，实现在下一目录创建文件夹来储存文件
+    os.chdir(&apos;news&apos;)
+except FileNotFoundError as E:  #如果没有创建文件夹，捕获错误，创建文件夹
+    os.mkdir(&apos;news&apos;)
+    os.chdir(&apos;news&apos;)
+    pass
+
+str_s = txt.read()
+test = str_s.split()    #从文件中读取网址并分割成列表进行储存来遍历爬虫
+
+for i in range(len(test)):  #request爬网页代码
+    url = test[i]  #将网页依次读出
+    port = 80
+    ua = {&apos;User-Agent&apos;: &apos;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) &apos;
+                        &apos;Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134&apos;}
+    page = request.Request(url, headers=ua)
+    data = request.urlopen(page).read().decode(&apos;utf-8&apos;)  #得到源代码
+
+    soup = BeautifulSoup(data, &apos;html.parser&apos;)     #使用beautifulsoup
+    con = soup.find_all(&apos;p&apos;)   #分割按p标签
+    st = []
+    pro = &apos;&apos;
+    for title in con:
+        pro = str(title.string) #读出为str
+        pro = pro.replace(&apos;\xa0&apos;, &apos;&apos;)  #去掉导致错误的字符
+        if len(pro) &gt;= 10:  #设置大于10个的字符有价值
+            st.append(pro)
+
+        head = soup.find_all(&apos;title&apos;)  #标题提取
+        he = &apos;&apos;
+        t = head[0]
+        he = str(t.string)
+        he = he.replace(&apos;\xa0&apos;, &apos;&apos;)
+
+        with open(he + &quot;.txt&quot;, &quot;w&quot;) as file: #打开并储存文件
+            try:
+                file.write(&apos;标题：&apos;+he+&apos;\n&apos;+&apos;正文：&apos;+&apos;\n&apos;)
+            except ConnectionRefusedError as E:
+                pass
+            for k in st:
+                try:
+                    file.write(&apos;     &apos;+k+&apos;\n&apos;)
+                except ConnectionRefusedError as E:
+                    pass
+        file.close()
+    print(i)
+</code></pre>
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/04/网页爬虫/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/31/周一总结/" class="archive-article-date">
-  	<time datetime="2018-07-31T06:26:26.270Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-31</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/07/31/周一总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">周一作业</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/31/周一总结/">周一作业</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/31/hello-world/" class="archive-article-date">
-  	<time datetime="2018-07-31T03:27:06.693Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/31/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -269,8 +410,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
